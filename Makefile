@@ -16,6 +16,10 @@ else
 DEBUG_FLAGS	:= -O0 -g
 endif
 
+ifeq ($(PLATFORM),)
+$(error "Please define the targeted PLATFORM")
+endif
+
 MYCFLAGS	?= -ffreestanding -fno-stack-protector -fno-stack-check \
 		   -fno-pie -static -nostdinc -std=c99 -Wall		\
 		   $(DEBUG_FLAGS) $(CFLAGS)
@@ -36,10 +40,11 @@ xuezi.elf: $(OBJS) xuezi.lds
 	$(LD) -o $@ $(MYLDFLAGS) $(OBJS) -Txuezi.lds
 
 %.o: %.c
-	$(CC) $(MYCFLAGS) -c $< -o $@ -Iinclude
+	$(CC) $(MYCFLAGS) -c $< -o $@ -Iinclude -Iinclude/platform-$(PLATFORM)
 
 %.o: %.S
-	$(CCAS) $(MYCCASFLAGS) -c $< -o $@
+	$(CCAS) $(MYCCASFLAGS) -c $< -o $@ \
+		-Iinclude -Iinclude/platform-$(PLATFORM)
 
 clean:
 	-rm $(OBJS)
