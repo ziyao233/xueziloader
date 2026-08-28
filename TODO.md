@@ -1,0 +1,12 @@
+- [x] Initialize UART for debugging
+- [ ] Apply core timer frequency fixup
+  - Need writing 0x0001000107270e00 to MCSR2, this probably modifies the CCFREQ
+    field
+- [ ] Lock SCache for writable RAM
+- [ ] Enable direct mapping window so cache could be utilized
+- [ ] Prepare C environment and enter C code
+- [ ] Initialize PLLs, re-configure the clock tree
+- [ ] Fix-up UART baud rate
+- [ ] Prepare parameters and invoke the real RAM initialization library
+- [ ] Unlock SCache
+- [ ] Jump to the next stage bootloader (U-Boot or anything :)
