@@ -109,10 +109,46 @@ enable_mmu:
 	li.w		$a0,		'm'
 	bl		putc
 
-.hlt:
-	nop
-	b		.hlt
+	/* We could finally prepare for C execution */
+	la.abs		$t0,		__text_end
+	la.abs		$t1,		__data_start
+	la.abs		$t2,		__data_end
 
+	// $t2 = (__data_end - __data_start + 7) >> 3
+	sub.d		$t2,		$t2,		$t1
+	addi.d		$t2,		$t2,		7
+	srli.d		$t2,		$t2,		3
+
+.copy_data:
+	ld.d		$t3,		$t0,		0
+	st.d		$t3,		$t1,		0
+	addi.d		$t0,		$t0,		8
+	addi.d		$t1,		$t1,		8
+	addi.d		$t2,		$t2,		-1
+	bnez		$t2,		.copy_data
+
+	li.w		$a0,		'd'
+	bl		putc
+
+
+	la.abs		$t0,		__bss_start
+	la.abs		$t1,		__bss_end
+.clear_bss:
+	st.d		$zero,		$t0,		0
+	addi.d		$t0,		$t0,		8
+	blt		$t0,		$t1,		.clear_bss
+
+	li.w		$a0,		'b'
+	bl		putc
+
+.setup_stack:
+	li.d		$sp,		TO_CACHED(ADDR_LOCKED_SCACHE) + \
+					SIZE_LOCKED_SCACHE
+
+	b		main
+
+	.global		rawputc
+rawputc:
 putc:
 	// Fortunately, in direct address translation mode, only [PALEN-1:0] of
 	// virtual addresses are considered when accessing memory. So this

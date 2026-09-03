@@ -4,7 +4,7 @@ ENTRY(_start)
 
 MEMORY {
 	xipflash (rx) : ORIGIN = 0x900000001c000000, LENGTH = 1M
-	ram (rwx) : ORIGIN = 0x0, LENGTH = 64M
+	scache (rwx) : ORIGIN = 0x9000000200000000, LENGTH = 256K
 }
 
 PHDRS {
@@ -17,6 +17,7 @@ SECTIONS {
 	.text : {
 		PROVIDE(__text_start = .);
 		*(.text.init) *(.text .text.*)
+		. = ALIGN(8);
 		PROVIDE(__text_end = .);
 	} > xipflash : text
 
@@ -24,13 +25,14 @@ SECTIONS {
 		PROVIDE(__data_start = .);
 		*(*.sdata .sdata*) *(.data .data.*)
 		PROVIDE(__data_end = .);
-	} > ram AT > xipflash : data
+	} > scache AT > xipflash : data
 
 	.bss : {
+		. = ALIGN(8);
 		PROVIDE(__bss_start = .);
 		*(.sbss .sbss.*) *(.bss .bss.*)
 		PROVIDE(__bss_end = .);
-	} > ram : bss
+	} > scache : bss
 
 	PROVIDE(__executable_end = .);
 }
