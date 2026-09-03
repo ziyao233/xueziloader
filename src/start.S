@@ -11,6 +11,7 @@
 	.global		_start
 
 _start:
+	bl		platform_early_init
 
 uart_init:
 	/*
