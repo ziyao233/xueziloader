@@ -3,7 +3,7 @@ OUTPUT_ARCH("loongarch")
 ENTRY(_start)
 
 MEMORY {
-	xipflash (rx) : ORIGIN = 0x1c000000, LENGTH = 1M
+	xipflash (rx) : ORIGIN = 0x900000001c000000, LENGTH = 1M
 	ram (rwx) : ORIGIN = 0x0, LENGTH = 64M
 }
 

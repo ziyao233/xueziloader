@@ -6,6 +6,8 @@
  */
 
 #include <addrmap.h>
+#include <addrspace.h>
+#include <csr.h>
 
 	.section .text.init
 	.global		_start
@@ -54,7 +56,40 @@ uart_init:
 	li.w		$t1,		0x3
 	st.b		$t1,		$t0,		 0x3
 
-	li.w		$a0,		's'
+	li.w		$a0,		'u'
+	bl		putc
+
+enable_mmu:
+	/*
+	 * Trampoline to enable MMU, setup temporary DMW setttings,
+	 *	0x0000 0000 0000 0000 -> strong ordered, uncached, where we're
+	 *				 now
+	 * 	0x9000 0000 0000 0000 -> coherent, cached
+	 */
+	li.d		$t0,		(0x0 << 60) | (0x0 << 4) | (0x1 << 0)
+	csrwr		$t0,		LOONGARCH_CSR_DMWIN0
+	li.d		$t0,		(0x9 << 60) | (0x1 << 4) | (0x1 << 0)
+	csrwr		$t0,		LOONGARCH_CSR_DMWIN1
+
+
+	li.d		$t0,		CSR_CRMD_PG
+	csrwr		$t0,		LOONGARCH_CSR_CRMD
+
+	la.abs		$ra,		.mmu_enabled
+	jr		$ra
+
+.mmu_enabled:
+	/*
+	 * Clean up the temporary DWM0 and setup it as
+	 *	0x8000 0000 0000 0000 -> strong ordered, uncached
+	 *
+	 * Now the address layout looks similar to the one used by Linux kernel.
+	 */
+	li.d		$t0,		(0x8 << 60) | (0x0 << 4) | (0x1 << 0)
+	csrwr		$t0,		LOONGARCH_CSR_DMWIN0
+
+
+	li.w		$a0,		'm'
 	bl		putc
 
 .hlt:
@@ -62,7 +97,10 @@ uart_init:
 	b		.hlt
 
 putc:
-	li.w		$t0,		ADDR_BOOTCONSOLE
+	// Fortunately, in direct address translation mode, only [PALEN-1:0] of
+	// virtual addresses are considered when accessing memory. So this
+	// TO_UNCACHED() conversion is also valid in DA mode.
+	li.d		$t0,		TO_UNCACHED(ADDR_BOOTCONSOLE)
 
 .poll:
 	ld.b		$t1,		$t0,		0x5
