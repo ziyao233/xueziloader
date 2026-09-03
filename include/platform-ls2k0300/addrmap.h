@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MPL-2.0
 /*
  *	xueziloader
- *	include/platform-ls2k0300/addrspace.h
+ *	include/platform-ls2k0300/addrmap.h
  *	Copyright (C) 2026 Yao Zi.
  */
 

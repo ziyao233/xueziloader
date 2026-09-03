@@ -5,7 +5,7 @@
  *	Copyright (C) 2026 Yao Zi.
  */
 
-#include <platform-ls2k0300/addrspace.h>
+#include <addrmap.h>
 
 	.section .text.init
 	.global		_start
