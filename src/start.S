@@ -36,7 +36,7 @@ uart_init:
 
 	/*
 	 * Configuring UART clock, by default PLLs are bypassed, so clk_apb
-	 * gets feed by 120MHz refclk directly, divides it by 8
+	 * gets feed by 120MHz refclk directly, divides it by 1
 	 * (the default apb_freqscale), and feeds it into UART.
 	 *
 	 * 120MHz / 16 / 115200 ~= 65.10, i.e.,
