@@ -59,6 +59,23 @@ uart_init:
 	li.w		$a0,		'u'
 	bl		putc
 
+lock_scache:
+	/*
+	 * "Locking" a scache prevents cache lines hitting the configured
+	 * window being swapped out, making use of this to create a scratch
+	 * SRAM to work on.
+	 */
+	li.d		$t0,		ADDR_SCACHE
+
+	li.d		$t1,		~(SIZE_LOCKED_SCACHE - 1)
+	st.d		$t1,		$t0,		0x40
+
+	li.d		$t1,		ADDR_LOCKED_SCACHE | (1 << 63)
+	st.d		$t1,		$t0,		0x0
+
+	li.w		$a0,		's'
+	bl		putc
+
 enable_mmu:
 	/*
 	 * Trampoline to enable MMU, setup temporary DMW setttings,
