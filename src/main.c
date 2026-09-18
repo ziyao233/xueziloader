@@ -5,24 +5,7 @@
  *	Copyright (C) 2026 Yao Zi <me@ziyao.cc>
  */
 
-void rawputc(char c);
-void
-putc(char c)
-{
-	if (c == '\n')
-		rawputc('\r');
-	rawputc(c);
-}
-
-int
-puts(const char *s)
-{
-	while (*s)
-		putc(*s++);
-	putc('\n');
-
-	return 0;
-}
+#include <stdio.h>
 
 void
 main(void)

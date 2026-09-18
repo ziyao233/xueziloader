@@ -29,7 +29,7 @@ MYCCASFLAGS	?= $(MYCFLAGS) $(CCASFLAGS)
 MYLDFLAGS	= $(LDFLAGS) -no-pie
 
 OBJS		= src/start.o src/platform-$(PLATFORM)-early.o src/main.o \
-		  src/string.o
+		  src/string.o src/stdio.o
 
 .PHONY: default clean
 
