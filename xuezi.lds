@@ -4,7 +4,7 @@ ENTRY(_start)
 
 MEMORY {
 	xipflash (rx) : ORIGIN = 0x900000001c000000, LENGTH = 1M
-	scache (rwx) : ORIGIN = 0x9000000200000000, LENGTH = 256K
+	scache (rwx) : ORIGIN = 0x9000000080000000, LENGTH = 256K
 }
 
 PHDRS {
