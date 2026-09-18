@@ -11,7 +11,7 @@ LD		= $(CROSS_COMPILE)ld
 OBJCOPY		= $(CROSS_COMPILE)objcopy
 
 ifeq ($(DEBUG),)
-DEBUG_FLAGS	:= -O2
+DEBUG_FLAGS	:= -Os
 else
 DEBUG_FLAGS	:= -O0 -g
 endif
