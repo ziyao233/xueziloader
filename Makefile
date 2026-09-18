@@ -28,7 +28,8 @@ MYCFLAGS	?= -ffreestanding -fno-stack-protector -fno-stack-check \
 MYCCASFLAGS	?= $(MYCFLAGS) $(CCASFLAGS)
 MYLDFLAGS	= $(LDFLAGS) -no-pie
 
-OBJS		= src/start.o src/platform-$(PLATFORM)-early.o src/main.o
+OBJS		= src/start.o src/platform-$(PLATFORM)-early.o src/main.o \
+		  src/string.o
 
 .PHONY: default clean
 
