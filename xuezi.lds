@@ -23,7 +23,7 @@ SECTIONS {
 
 	.data : {
 		PROVIDE(__data_start = .);
-		*(*.sdata .sdata*) *(.data .data.*)
+		*(*.sdata .sdata*) *(.data .data.*) *(.rodata .rodata.*)
 		PROVIDE(__data_end = .);
 	} > scache AT > xipflash : data
 
