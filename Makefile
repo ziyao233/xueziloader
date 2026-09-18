@@ -22,6 +22,7 @@ endif
 
 MYCFLAGS	?= -ffreestanding -fno-stack-protector -fno-stack-check \
 		   -fno-pie -static -nostdinc -std=c99 -Wall		\
+		   -march=loongarch64 -mfpu=none			\
 		   $(DEBUG_FLAGS) $(CFLAGS)
 
 MYCCASFLAGS	?= $(MYCFLAGS) $(CCASFLAGS)
