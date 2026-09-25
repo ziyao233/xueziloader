@@ -9,7 +9,7 @@
 #define _ADDRMAP_H_
 
 #define TO_PHYS(x)		((x) & 0x0fffffffffffffff)
-#define TO_UNCACHED(x)		((x) | (0x8 << 60))
-#define TO_CACHED(x)		((x) | (0x9 << 60))
+#define TO_UNCACHED(x)		((x) | (0x8ULL << 60))
+#define TO_CACHED(x)		((x) | (0x9ULL << 60))
 
 #endif // _ADDRMAP_H_
