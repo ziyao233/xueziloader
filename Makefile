@@ -28,8 +28,9 @@ MYCFLAGS	?= -ffreestanding -fno-stack-protector -fno-stack-check \
 MYCCASFLAGS	?= $(MYCFLAGS) $(CCASFLAGS)
 MYLDFLAGS	= $(LDFLAGS) -no-pie
 
-OBJS		= src/start.o src/platform-$(PLATFORM)-early.o src/main.o \
-		  src/string.o src/stdio.o src/platform-$(PLATFORM).o
+OBJS		= src/start.o src/main.o src/string.o src/stdio.o
+
+include platform/$(PLATFORM)/Makefile
 
 .PHONY: default clean
 
@@ -38,15 +39,15 @@ default: xuezi.bin
 xuezi.bin: xuezi.elf
 	$(OBJCOPY) -O binary -j .text -j .data $< $@
 
-xuezi.elf: $(OBJS) xuezi.lds
-	$(LD) -o $@ $(MYLDFLAGS) $(OBJS) -Txuezi.lds
+xuezi.elf: $(OBJS) $(EXTOBJS) xuezi.lds
+	$(LD) -o $@ $(MYLDFLAGS) $(OBJS) $(EXTOBJS) -Txuezi.lds
 
 %.o: %.c
-	$(CC) $(MYCFLAGS) -c $< -o $@ -Iinclude -Iinclude/platform-$(PLATFORM)
+	$(CC) $(MYCFLAGS) -c $< -o $@ -Iinclude -Iinclude/platform-$(SOC)
 
 %.o: %.S
 	$(CCAS) $(MYCCASFLAGS) -c $< -o $@ \
-		-Iinclude -Iinclude/platform-$(PLATFORM)
+		-Iinclude -Iinclude/platform-$(SOC)
 
 clean:
 	-rm $(OBJS)

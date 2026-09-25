@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MPL-2.0
 /*
  *	xueziloader
- *	src/platform-ls2k0300.c
+ *	platform/ls2k0300/late.c
  *	Copyright (C) 2026 Yao Zi <me@ziyao.cc>
  */
 
