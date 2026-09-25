@@ -21,7 +21,7 @@ $(error "Please define the targeted PLATFORM")
 endif
 
 MYCFLAGS	?= -ffreestanding -fno-stack-protector -fno-stack-check \
-		   -fno-pie -static -nostdinc -std=c99 -Wall		\
+		   -fno-pie -static -nostdinc -std=gnu99 -Wall		\
 		   -march=loongarch64 -mfpu=none			\
 		   $(DEBUG_FLAGS) $(CFLAGS)
 
@@ -29,7 +29,7 @@ MYCCASFLAGS	?= $(MYCFLAGS) $(CCASFLAGS)
 MYLDFLAGS	= $(LDFLAGS) -no-pie
 
 OBJS		= src/start.o src/platform-$(PLATFORM)-early.o src/main.o \
-		  src/string.o src/stdio.o
+		  src/string.o src/stdio.o src/platform-$(PLATFORM).o
 
 .PHONY: default clean
 
