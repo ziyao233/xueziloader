@@ -11,9 +11,11 @@
 #define LOONGARCH_CSR_CRMD		0x0
 #define  CSR_CRMD_DA			(1 << 3)
 #define  CSR_CRMD_PG			(1 << 4)
+#define LOONGARCH_CSR_EENTRY		0xc
 #define LOONGARCH_CSR_IMPCTL1		0x80
 #define  CSR_AUTO_FLUSHSFB		(1 << 9)
 #define  CSR_FASTLDQ			(1 << 12)
+#define LOONGARCH_CSR_TLBRENTRY		0x88
 #define LOONGARCH_CSR_MCSR2		0xc2
 #define LOONGARCH_CSR_MCSR9		0xc9
 #define LOONGARCH_CSR_MCSR24		0xf0
@@ -27,5 +29,24 @@
 #define LOONGARCH_CSR_DMWIN3		0x183
 #define LOONGARCH_CSR_PERFCTRL0		0x200
 #define  CSR_PERFCTRL_PLV0		(1 << 16)
+
+#ifndef __ASSEMBLER__
+#include <stdint.h>
+
+#define csr_read(reg) ({						\
+	uint64_t value;							\
+	asm volatile ("csrrd %0, %1"	:				\
+		      "=r" (value)	:				\
+		      "X" (reg));					\
+	value;								\
+})
+
+#define csr_write(value, reg) do {					\
+	uint64_t __value = (uint64_t)(value);				\
+	asm volatile ("csrwr %0, %1"	:				\
+		      "+r" (__value)	:				\
+		      "X" (reg));					\
+} while (0)
+#endif
 
 #endif // _CSR_H_

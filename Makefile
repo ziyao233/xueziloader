@@ -28,7 +28,8 @@ MYCFLAGS	?= -ffreestanding -fno-stack-protector -fno-stack-check \
 MYCCASFLAGS	?= $(MYCFLAGS) $(CCASFLAGS)
 MYLDFLAGS	= $(LDFLAGS) -no-pie
 
-OBJS		= src/start.o src/main.o src/string.o src/stdio.o
+OBJS		= src/start.o src/main.o src/string.o src/stdio.o	\
+		  src/lowlevel.o
 
 include platform/$(PLATFORM)/Makefile
 
