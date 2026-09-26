@@ -14,3 +14,4 @@ endif
 SOC	= ls2k0300
 OBJS	+= platform/ls2k0300/early.o
 EXTOBJS += $(LS2K0300_DDR_LIB)
+MYCFLAGS += -mstrict-align
