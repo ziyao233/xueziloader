@@ -4,7 +4,7 @@ ENTRY(_start)
 
 MEMORY {
 	xipflash (rx) : ORIGIN = 0x900000001c000000, LENGTH = 1M
-	scache (rwx) : ORIGIN = 0x9000000080000000, LENGTH = 256K
+	scache (rwx) : ORIGIN = 0x9000000020000000, LENGTH = 256K
 }
 
 PHDRS {
@@ -23,7 +23,7 @@ SECTIONS {
 
 	.data : {
 		PROVIDE(__data_start = .);
-		*(*.sdata .sdata*) *(.data .data.*) *(.rodata .rodata.*)
+		*(*.sdata .sdata*) *(.data .data.*) *(.rodata .rodata.*) *(.got)
 		PROVIDE(__data_end = .);
 	} > scache AT > xipflash : data
 
@@ -33,6 +33,10 @@ SECTIONS {
 		*(.sbss .sbss.*) *(.bss .bss.*)
 		PROVIDE(__bss_end = .);
 	} > scache : bss
+
+	/DISCARD/ : {
+		*(.eh_frame)
+	}
 
 	PROVIDE(__executable_end = .);
 }
